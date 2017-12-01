@@ -47,6 +47,7 @@ As such, these templates have a number of distinguishing features from the stand
 * All layes share a foundation networking infrastructure and can be developed/tweaked independently
 * Server configurations include full Linux/Docker diagnostics, logging and monitoring, including a free tier OMS instance and sample dashboards
 * Linux package provisioning leverages `cloud-config`, making it easier to re-use existing on-premises (or competing providers') configurations
+* Resources and resource groups are namespaced and tagged to make it easy to deploy and manage multiple copies of the same solution for separate tenants
 
 Why ACME? well, because I loved the Warner Bros. cartoons, and because these templates aim to let to do _everything_ you'd possibly need to get your infrastructure running and usable in under an hour.
 
