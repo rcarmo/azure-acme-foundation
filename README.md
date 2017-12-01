@@ -39,7 +39,7 @@ This is what it all looks like deployed, if you hide away storage and other inco
 
 ## Why
 
-I needed a set of re-usable Azure templates that brought together a number of (sometimes quite widely disseminated) aspects of Linux infrastructure management in Azure and that enabled me to get large-scale projects up to speed quickly.
+I needed a set of re-usable Azure templates that brought together a number of (sometimes quite widely disseminated) aspects of Linux infrastructure management (like diagnostics and monitoring) and that enabled me to get large-scale projects up to speed quickly.
 
 As such, these templates have a number of distinguishing features from the standard Microsoft samples:
 
