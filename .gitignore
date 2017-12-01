@@ -1,0 +1,6 @@
+keys/*
+parameters/*
+.vscode
+.ipynb_checkpoints
+.python-version
+.DS_Store
