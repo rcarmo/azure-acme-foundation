@@ -82,11 +82,12 @@
     "tenantName": "[toLower(parameters('tenantName'))]",
     "layerName": "[toLower(parameters('layerName'))]",
     "uppercasedLayerName": "[concat(toUpper(substring(variables('layerName'),0,1)),substring(variables('layerName'),1))]",
-    "networkingResourceGroupId": "[concat(subscription().id,'/resourceGroups/',variables('tenantName'),'-networking')]",
-    "diagsName": "[substring(concat(variables('tenantName'), 'diag', toLower(uniqueString(variables('networkingResourceGroupId')))), 0, 24)]",
-    "vnetName": "[concat(variables('networkingResourceGroupId'), '/providers/Microsoft.Network/virtualNetworks/', variables('tenantName'))]",
-    "serverName": "[concat(variables('tenantName'),variables('uppercasedLayerName'))]",
-    "omsWorkspaceName": "[concat(variables('tenantName'),'Monitoring')]"    
+    "foundationResourceGroupId": "[concat(subscription().id,'/resourceGroups/',variables('tenantName'),'-foundation')]",
+    "diagsName": "[substring(concat(variables('tenantName'), 'diag', toLower(uniqueString(variables('foundationResourceGroupId')))), 0, 24)]",
+    "diagsId": "[concat(variables('foundationResourceGroupId'),'/providers/Microsoft.Storage/storageAccounts/', variables('diagsName'))]",
+    "vnetId": "[concat(variables('foundationResourceGroupId'), '/providers/Microsoft.Network/virtualNetworks/', variables('tenantName'))]",
+    "omsWorkspaceId": "[concat(variables('foundationResourceGroupId'), '/providers/Microsoft.OperationalInsights/workspaces/', variables('tenantName'),'Monitoring')]",
+    "serverName": "[concat(variables('tenantName'),variables('uppercasedLayerName'))]"
   },
   "resources": [
     {
@@ -177,11 +178,11 @@
       "resources": [
         {
           "type": "Microsoft.Compute/virtualMachines/extensions",
-          "name": "[concat(variables('serverName'), '/Microsoft.Azure.Diagnostics')]",
+          "name": "[concat(variables('serverName'), copyIndex(), '/Microsoft.Azure.Diagnostics')]",
           "apiVersion": "2017-03-30",
           "location": "[resourceGroup().location]",
           "dependsOn": [
-            "[concat('Microsoft.Compute/virtualMachines/', variables('serverName'))]"
+            "[concat('Microsoft.Compute/virtualMachines/',variables('serverName'),copyIndex())]"
           ],
           "properties": {
             "publisher": "Microsoft.Azure.Diagnostics",
@@ -202,7 +203,7 @@
                         "scheduledTransferPeriod": "PT1H"
                       }
                     ],
-                    "resourceId": "[resourceId('Microsoft.Compute/virtualMachines',variables('serverName'))]"
+                    "resourceId": "[resourceId('Microsoft.Compute/virtualMachines',concat(variables('serverName'),copyIndex()))]"
                   },
                   "syslogEvents": {
                     "syslogEventConfiguration": {
@@ -936,16 +937,21 @@
                 },
                 "sampleRateInSeconds": 15
               }
+            },
+            "protectedSettings": {
+              "storageAccountName": "[variables('diagsName')]",
+              "storageAccountKey": "[listKeys(variables('diagsId'),'2015-06-15').key1]",
+              "storageAccountEndPoint": "https://core.windows.net"
             }
           }
         },
         {
           "type": "Microsoft.Compute/virtualMachines/extensions",
-          "name": "[concat(variables('serverName'), '/Microsoft.EnterpriseCloud.Monitoring')]",
+          "name": "[concat(variables('serverName'),copyIndex(),'/Microsoft.EnterpriseCloud.Monitoring')]",
           "apiVersion": "2017-03-30",
           "location": "[resourceGroup().location]",
           "dependsOn": [
-            "[concat('Microsoft.Compute/virtualMachines/', variables('serverName'))]"
+            "[concat('Microsoft.Compute/virtualMachines/',variables('serverName'),copyIndex())]"
           ],
           "properties": {
             "publisher": "Microsoft.EnterpriseCloud.Monitoring",
@@ -953,10 +959,10 @@
             "typeHandlerVersion": "1.4",
             "autoUpgradeMinorVersion": true,
             "settings": {
-              "workspaceId": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', variables('omsWorkspaceName')), '2015-03-20').customerId]"
+              "workspaceId": "[reference(variables('omsWorkspaceId'), '2015-03-20').customerId]"
             },
             "protectedSettings": {
-              "workspaceKey": "[listKeys(resourceId('Microsoft.OperationalInsights/workspaces/', variables('omsWorkspaceName')), '2015-03-20').primarySharedKey]"
+              "workspaceKey": "[listKeys(variables('omsWorkspaceId'), '2015-03-20').primarySharedKey]"
             }
           }
         }
@@ -988,7 +994,7 @@
             "name": "[concat(variables('serverName'),copyIndex())]",
             "properties": {
               "subnet": {
-                "id": "[concat(variables('vnetName'), '/subnets/', parameters('serverSubnet'))]"
+                "id": "[concat(variables('vnetId'), '/subnets/', parameters('serverSubnet'))]"
               }
             }
           }

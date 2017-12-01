@@ -25,11 +25,12 @@
     },
     "jumpBoxSize": {
       "type": "string",
-      "defaultValue": "Standard_F1",
+      "defaultValue": "Standard_B1ms",
       "allowedValues": [
         "Standard_A0",
         "Standard_A1_v2",
         "Standard_B1s",
+        "Standard_B1ms",
         "Standard_F1"
       ],
       "metadata": {

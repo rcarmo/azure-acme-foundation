@@ -67,4 +67,6 @@ runcmd:
   - apt-get update
   - DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y
   - DEBIAN_FRONTEND=noninteractive apt-get autoremove -y
+  - systemctl start docker
+  - docker run -d --restart=always redis:3.2
   - reboot

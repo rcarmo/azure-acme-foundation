@@ -52,6 +52,9 @@ params = {
         }
     }},
     "middleware": {**defaults, **{
+        "layerName": {
+            "value": "middleware"
+        },
         "serverCustomData": {
             "value": slurp('middleware.yml')
         },
@@ -63,8 +66,17 @@ params = {
         }
     }},
     "frontend": {**defaults, **{ 
-        "frontEndServerCustomData": {
+        "layerName": {
+            "value": "frontend"
+        },
+        "serverCustomData": {
             "value": slurp('frontend.yml')
+        },
+        "servicesTag": {
+            "value": "ssh,http,https"
+        },
+        "serverSubnet": {
+            "value": "frontend"
         }
     }},
     "devops": {**defaults, **{ 

@@ -17,6 +17,8 @@
 * [x] Jumpbox and diagnostics storage account
 * [x] Networking
 
+> **Note:** Right now all VMs start a `redis` container for testing OMS monitoring. That will be removed in the future.
+
 ## What
 
 This is a set of scripts to generate and deploy Azure Resource Manager templates for multi-tier, multi-tenant solutions.
