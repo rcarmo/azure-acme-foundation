@@ -6,6 +6,7 @@
 ## TODO
 
 * [ ] Key vault
+* [ ] Service Map agent
 * [ ] Front-end load balancers
 * [ ] Docker registry and Jenkins
 * [ ] Postgres PaaS
@@ -38,13 +39,13 @@ This is what it all looks like deployed, if you hide away storage and other inco
 
 ## Why
 
-I needed a set of re-usable Azure templates that brought together a number of (sometimes quite widely disseminated) aspects of Linux infrastructure mangagement in Azure and that enabled me to get large-scale projects up to speed quickly.
+I needed a set of re-usable Azure templates that brought together a number of (sometimes quite widely disseminated) aspects of Linux infrastructure management in Azure and that enabled me to get large-scale projects up to speed quickly.
 
 As such, these templates have a number of distinguishing features from the standard Microsoft samples:
 
 * _Everything_ is CLI-driven. Templates never leave your machine and are _never_ published to a public URL
 * All layes share a foundation networking infrastructure and can be developed/tweaked independently
-* Server configurations include full Linux/Docker diagnostics and monitoring, including a free tier OMS instance and sample dashboards
+* Server configurations include full Linux/Docker diagnostics, logging and monitoring, including a free tier OMS instance and sample dashboards
 * Linux package provisioning leverages `cloud-config`, making it easier to re-use existing on-premises (or competing providers') configurations
 
 Why ACME? well, because I loved the Warner Bros. cartoons, and because these templates aim to let to do _everything_ you'd possibly need to get your infrastructure running and usable in under an hour.
