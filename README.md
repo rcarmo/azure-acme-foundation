@@ -10,6 +10,7 @@
 * [ ] Docker registry and Jenkins
 * [ ] Postgres PaaS
 * [ ] Check timezones and locales in cloud-config
+* [ ] Tag solutions and OMS
 * [x] Timestamp deployments
 * [x] Full diagnostics and OMS configuration (solutions, dashboards, container support)
 * [x] Docker CE repository added to all servers to ease deployment
@@ -30,6 +31,10 @@ A `tenant` is defined as a set of resource groups, each of which maps to a typic
 * `middleware` (app servers)
 * `frontend` (front-end servers)
 * `devops` (Jenkins, etc.)
+
+This is what it all looks like deployed, if you hide away storage and other inconsequentials:
+
+<img src="https://raw.githubusercontent.com/rcarmo/azure-acme-foundation/master/images/overview.png" style="max-width: 100%; height: auto;">
 
 ## Why
 
