@@ -83,7 +83,7 @@
     "layerName": "[toLower(parameters('layerName'))]",
     "uppercasedLayerName": "[concat(toUpper(substring(variables('layerName'),0,1)),substring(variables('layerName'),1))]",
     "foundationResourceGroupId": "[concat(subscription().id,'/resourceGroups/',variables('tenantName'),'-foundation')]",
-    "diagsName": "[substring(concat(variables('tenantName'), 'diag', toLower(uniqueString(variables('foundationResourceGroupId')))), 0, 24)]",
+    "diagsName": "[substring(concat(variables('tenantName'), 'diag', toLower(uniqueString(variables('foundationResourceGroupId')))), 0, 20)]",
     "diagsId": "[concat(variables('foundationResourceGroupId'),'/providers/Microsoft.Storage/storageAccounts/', variables('diagsName'))]",
     "vnetId": "[concat(variables('foundationResourceGroupId'), '/providers/Microsoft.Network/virtualNetworks/', variables('tenantName'))]",
     "omsWorkspaceId": "[concat(variables('foundationResourceGroupId'), '/providers/Microsoft.OperationalInsights/workspaces/', variables('tenantName'),'Monitoring')]",

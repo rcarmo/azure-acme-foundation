@@ -71,7 +71,7 @@
   },
   "variables": {
     "tenantName": "[toLower(parameters('tenantName'))]",
-    "diagsName": "[substring(concat(variables('tenantName'), 'diag',  toLower(uniqueString(resourceGroup().id))), 0, 24)]",
+    "diagsName": "[substring(concat(variables('tenantName'), 'diag',  toLower(uniqueString(resourceGroup().id))), 0, 20)]",
     "vnetName": "[variables('tenantName')]",
     "jumpBoxName": "[concat(variables('tenantName'),'Jumpbox')]",
     "omsWorkspaceName": "[concat(variables('tenantName'),'Monitoring')]",

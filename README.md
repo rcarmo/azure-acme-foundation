@@ -5,12 +5,12 @@
 
 ## TODO
 
-* [ ] Use Key vault?
-* [ ] Set timezones and locales inside cloud-config
-* [ ] Timestamp deployments
+* [ ] Key vault
 * [ ] Front-end load balancers
 * [ ] Docker registry and Jenkins
 * [ ] Postgres PaaS
+* [ ] Check timezones and locales in cloud-config
+* [x] Timestamp deployments
 * [x] Full diagnostics and OMS configuration (solutions, dashboards, container support)
 * [x] Docker CE repository added to all servers to ease deployment
 * [x] Generic layer template
@@ -48,7 +48,7 @@ Why ACME? well, because I loved the Warner Bros. cartoons, and because these tem
 
 * `make keys` - generates an SSH key for managing the servers
 * `make params` - generates ARM template parameters
-* `make deploy-networking` - deploys the networking layer, the jumpbox and a diagnostics storage account for all servers
+* `make deploy-foundation` - deploys the networking layer, the jumpbox, a diagnostics storage account and OMS for all servers
 * `make deploy-<layername>` - deploys a named layer using the `generic-layer` template
 * `make endpoints` - list DNS aliases
 * `make destroy-<layername>` - destroys the named layer
@@ -60,7 +60,7 @@ Why ACME? well, because I loved the Warner Bros. cartoons, and because these tem
     az login
     make keys
     make params
-    make deploy-networking
+    make deploy-foundation
     make deploy-data
     make deploy-middleware
     make deploy-frontend

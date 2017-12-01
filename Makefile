@@ -1,5 +1,5 @@
 # Set environment variables (if they're not defined yet)
-export TENANT_NAME?=contoso
+export TENANT_NAME?=acme
 export LOCATION?=eastus
 export SSH_USER?=azureuser
 export TIMESTAMP=`date "+%Y-%m-%d-%H-%M-%S"`
@@ -49,7 +49,8 @@ deploy-%:
 		--template-file templates/generic-layer.json \
 		--parameters @parameters/$*.json \
 		--name cli-$(LOCATION)-$(TIMESTAMP) \
-		--output table
+		--output table \
+		--no-wait
 
 
 clean:
