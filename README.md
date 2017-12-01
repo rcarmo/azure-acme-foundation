@@ -33,6 +33,10 @@ A `tenant` is defined as a set of resource groups, each of which maps to a typic
 * `frontend` (front-end servers)
 * `devops` (Jenkins, etc.)
 
+This is what the default monitoring dashboard looks like after a few minutes:
+
+<img src="https://raw.githubusercontent.com/rcarmo/azure-acme-foundation/master/images/oms.png" style="max-width: 100%; height: auto;">
+
 This is what it all looks like deployed, if you hide away storage and other inconsequentials:
 
 <img src="https://raw.githubusercontent.com/rcarmo/azure-acme-foundation/master/images/overview.png" style="max-width: 100%; height: auto;">
