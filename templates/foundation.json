@@ -137,7 +137,7 @@
         "layer": "foundation",
         "purpose": "jumpbox",
         "services": "[parameters('servicesTag')]",
-        "os": "Linux"
+        "os": "linux"
       },
       "properties": {
         "osProfile": {
@@ -1294,7 +1294,7 @@
         },
         {
           "type": "Microsoft.Compute/virtualMachines/extensions",
-          "name": "[concat(variables('jumpBoxName'), '/Microsoft.EnterpriseCloud.Monitoring')]",
+          "name": "[concat(variables('jumpBoxName'), '-windows/Microsoft.EnterpriseCloud.Monitoring')]",
           "apiVersion": "2017-03-30",
           "location": "[resourceGroup().location]",
           "dependsOn": [
