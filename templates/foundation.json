@@ -189,6 +189,7 @@
       },
       "resources": [
         {
+          "condition": "[equals(variables('bastionOSType'),'Linux')]",
           "type": "Microsoft.Compute/virtualMachines/extensions",
           "name": "[concat(variables('jumpBoxName'), '-linux/Microsoft.Azure.Diagnostics')]",
           "apiVersion": "2017-03-30",
@@ -959,6 +960,7 @@
           }
         },
         {
+          "condition": "[equals(variables('bastionOSType'),'Linux')]",
           "type": "Microsoft.Compute/virtualMachines/extensions",
           "name": "[concat(variables('jumpBoxName'),'-linux/Microsoft.EnterpriseCloud.Monitoring')]",
           "apiVersion": "2017-03-30",
@@ -1047,6 +1049,7 @@
       },
       "resources": [
         {
+          "condition": "[equals(variables('bastionOSType'),'Windows')]",
           "type": "Microsoft.Compute/virtualMachines/extensions",
           "name": "[concat(variables('jumpBoxName'), '-windows/Microsoft.Azure.Diagnostics')]",
           "apiVersion": "2017-03-30",
@@ -1293,6 +1296,7 @@
           }
         },
         {
+          "condition": "[equals(variables('bastionOSType'),'Windows')]",
           "type": "Microsoft.Compute/virtualMachines/extensions",
           "name": "[concat(variables('jumpBoxName'), '-windows/Microsoft.EnterpriseCloud.Monitoring')]",
           "apiVersion": "2017-03-30",
