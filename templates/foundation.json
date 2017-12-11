@@ -127,7 +127,7 @@
     },
     {
       "comments": "SSH jumpbox",
-      "condition": "[equals(variables('bastionOSType'),'Linux']",
+      "condition": "[equals(variables('bastionOSType'),'Linux')]",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('jumpBoxName')]",
       "apiVersion": "2017-03-30",
@@ -989,7 +989,7 @@
     },
     {
       "comments": "RDP jumpbox",
-      "condition": "[equals(variables('bastionOSType'),'Windows']",
+      "condition": "[equals(variables('bastionOSType'),'Windows')]",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('jumpBoxName')]",
       "apiVersion": "2017-03-30",
@@ -1404,7 +1404,7 @@
     },
     {
       "comments": "NSG for Windows jumpbox",
-      "condition": "[equals(variables('bastionOSType'),'Windows']",
+      "condition": "[equals(variables('bastionOSType'),'Windows')]",
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('jumpBoxName')]",
       "apiVersion": "2015-06-15",
