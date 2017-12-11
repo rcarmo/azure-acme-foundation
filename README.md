@@ -13,6 +13,7 @@
 * [ ] Check timezones and locales in cloud-config
 * [ ] Automation account?
 * [ ] Tag solutions and OMS
+» [ ] Windows variant
 * [x] Timestamp deployments
 * [x] Full diagnostics and OMS configuration (solutions, dashboards, container support)
 * [x] Docker CE repository added to all servers to ease deployment
