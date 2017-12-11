@@ -11,6 +11,7 @@
 * [ ] Docker registry and Jenkins
 * [ ] Postgres PaaS
 * [ ] Check timezones and locales in cloud-config
+* [ ] Automation account?
 * [ ] Tag solutions and OMS
 * [x] Timestamp deployments
 * [x] Full diagnostics and OMS configuration (solutions, dashboards, container support)
@@ -86,4 +87,3 @@ Why ACME? well, because I loved the Warner Bros. cartoons, and because these tem
 
 [d]: http://docker.com
 [p]: http://python.org
-[dh]:https://hub.docker.com/r/rcarmo/demo-frontend-stateless/
