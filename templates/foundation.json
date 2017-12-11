@@ -960,11 +960,11 @@
         },
         {
           "type": "Microsoft.Compute/virtualMachines/extensions",
-          "name": "[concat(variables('jumpBoxName'), '-linux/Microsoft.EnterpriseCloud.Monitoring')]",
+          "name": "[concat(variables('jumpBoxName'),'-linux/Microsoft.EnterpriseCloud.Monitoring')]",
           "apiVersion": "2017-03-30",
           "location": "[resourceGroup().location]",
           "dependsOn": [
-            "[concat('Microsoft.Compute/virtualMachines/', variables('jumpBoxName'))]",
+            "[concat('Microsoft.Compute/virtualMachines/',variables('jumpBoxName'),'-linux')]",
             "[concat('Microsoft.OperationalInsights/workspaces/', variables('omsWorkspaceName'))]"
           ],
           "properties": {
@@ -973,17 +973,17 @@
             "typeHandlerVersion": "1.4",
             "autoUpgradeMinorVersion": true,
             "settings": {
-              "workspaceId": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', variables('omsWorkspaceName')), '2015-03-20').customerId]"
+              "workspaceId": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/',variables('omsWorkspaceName')),'2015-03-20').customerId]"
             },
             "protectedSettings": {
-              "workspaceKey": "[listKeys(resourceId('Microsoft.OperationalInsights/workspaces/', variables('omsWorkspaceName')), '2015-03-20').primarySharedKey]"
+              "workspaceKey": "[listKeys(resourceId('Microsoft.OperationalInsights/workspaces/',variables('omsWorkspaceName')),'2015-03-20').primarySharedKey]"
             }
           }
         }
       ],
       "dependsOn": [
         "[concat('Microsoft.Network/networkInterfaces/',variables('jumpBoxName'))]",
-        "[concat('Microsoft.OperationalInsights/workspaces/', variables('omsWorkspaceName'))]",
+        "[concat('Microsoft.OperationalInsights/workspaces/',variables('omsWorkspaceName'))]",
         "[concat('Microsoft.Storage/storageAccounts/',variables('diagsName'))]"
       ]
     },
@@ -1303,8 +1303,8 @@
           ],
           "properties": {
             "publisher": "Microsoft.EnterpriseCloud.Monitoring",
-            "type": "OmsAgentForWindows",
-            "typeHandlerVersion": "TODO FIX THIS",
+            "type": "MicrosoftMonitoringAgent",
+            "typeHandlerVersion": "1.0",
             "autoUpgradeMinorVersion": true,
             "settings": {
               "workspaceId": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', variables('omsWorkspaceName')), '2015-03-20').customerId]"
