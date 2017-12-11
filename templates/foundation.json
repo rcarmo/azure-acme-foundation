@@ -75,7 +75,7 @@
     "vnetName": "[variables('tenantName')]",
     "jumpBoxName": "[concat(variables('tenantName'),'Jumpbox')]",
     "omsWorkspaceName": "[concat(variables('tenantName'),'Monitoring')]",
-    "bastionOSType": "Linux",
+    "bastionOSType": "linux",
     "omsConfig": {
       "solutions": [
         {
@@ -127,7 +127,7 @@
     },
     {
       "comments": "SSH jumpbox",
-      "condition": "[equals(variables('bastionOSType'),'Linux')]",
+      "condition": "[equals(variables('bastionOSType'),'linux')]",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[concat(variables('jumpBoxName'),'-linux')]",
       "apiVersion": "2017-03-30",
@@ -189,7 +189,7 @@
       },
       "resources": [
         {
-          "condition": "[equals(variables('bastionOSType'),'Linux')]",
+          "condition": "[equals(variables('bastionOSType'),'linux')]",
           "type": "Microsoft.Compute/virtualMachines/extensions",
           "name": "[concat(variables('jumpBoxName'), '-linux/Microsoft.Azure.Diagnostics')]",
           "apiVersion": "2017-03-30",
@@ -960,7 +960,7 @@
           }
         },
         {
-          "condition": "[equals(variables('bastionOSType'),'Linux')]",
+          "condition": "[equals(variables('bastionOSType'),'linux')]",
           "type": "Microsoft.Compute/virtualMachines/extensions",
           "name": "[concat(variables('jumpBoxName'),'-linux/Microsoft.EnterpriseCloud.Monitoring')]",
           "apiVersion": "2017-03-30",
@@ -991,7 +991,7 @@
     },
     {
       "comments": "RDP jumpbox",
-      "condition": "[equals(variables('bastionOSType'),'Windows')]",
+      "condition": "[equals(variables('bastionOSType'),'windows')]",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[concat(variables('jumpBoxName'),'-windows')]",
       "apiVersion": "2017-03-30",
@@ -1049,7 +1049,7 @@
       },
       "resources": [
         {
-          "condition": "[equals(variables('bastionOSType'),'Windows')]",
+          "condition": "[equals(variables('bastionOSType'),'windows')]",
           "type": "Microsoft.Compute/virtualMachines/extensions",
           "name": "[concat(variables('jumpBoxName'), '-windows/Microsoft.Azure.Diagnostics')]",
           "apiVersion": "2017-03-30",
@@ -1296,7 +1296,7 @@
           }
         },
         {
-          "condition": "[equals(variables('bastionOSType'),'Windows')]",
+          "condition": "[equals(variables('bastionOSType'),'windows')]",
           "type": "Microsoft.Compute/virtualMachines/extensions",
           "name": "[concat(variables('jumpBoxName'), '-windows/Microsoft.EnterpriseCloud.Monitoring')]",
           "apiVersion": "2017-03-30",
@@ -1378,7 +1378,7 @@
     },
     {
       "comments": "NSG for Linux jumpbox",
-      "condition": "[equals(variables('bastionOSType'),'Linux')]",
+      "condition": "[equals(variables('bastionOSType'),'linux')]",
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('jumpBoxName')]",
       "apiVersion": "2015-06-15",
@@ -1408,7 +1408,7 @@
     },
     {
       "comments": "NSG for Windows jumpbox",
-      "condition": "[equals(variables('bastionOSType'),'Windows')]",
+      "condition": "[equals(variables('bastionOSType'),'windows')]",
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[concat(variables('jumpBoxName'),'-windows')]",
       "apiVersion": "2015-06-15",
