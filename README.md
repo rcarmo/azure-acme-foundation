@@ -51,7 +51,7 @@ I needed a set of re-usable Azure templates that brought together a number of (s
 As such, these templates have a number of distinguishing features from the standard Microsoft samples:
 
 * _Everything_ is CLI-driven. Templates never leave your machine and are _never_ published to a public URL
-* All layes share a foundation networking infrastructure and can be developed/tweaked independently
+* All layers share a foundation networking infrastructure and can be developed/tweaked independently
 * Server configurations include full Linux/Docker diagnostics, logging and monitoring, including a free tier OMS instance and sample dashboards
 * Linux package provisioning leverages `cloud-config`, making it easier to re-use existing on-premises (or competing providers') configurations
 * Resources and resource groups are namespaced and tagged to make it easy to deploy and manage multiple copies of the same solution for separate tenants
