@@ -1,0 +1,19 @@
+{
+    "comments": "$SUBNET Availability Set",
+    "type": "Microsoft.Compute/availabilitySets",
+    "name": "$HOSTNAME",
+    "apiVersion": "2017-03-30",
+    "location": "$LOCATION",
+    "sku": {
+      "name": "Aligned"
+    },
+    "tags": {
+      "tenant": "[variables('tenantName')]",
+      "layer": "[variables('layerName')]"
+    },
+    "properties": {
+      "platformUpdateDomainCount": 5,
+      "platformFaultDomainCount": 3,
+        "virtualMachines": []
+    }
+}

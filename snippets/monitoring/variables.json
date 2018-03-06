@@ -1,0 +1,34 @@
+{
+    "omsConfig": {
+        "solutions": [
+            {
+                "name": "[concat('Security', '(', variables('omsWorkspaceName'), ')')]",
+                "marketplaceName": "Security"
+            },
+            {
+                "name": "[concat('AgentHealthAssessment', '(', variables('omsWorkspaceName'), ')')]",
+                "marketplaceName": "AgentHealthAssessment"
+            },
+            {
+                "name": "[concat('ChangeTracking', '(', variables('omsWorkspaceName'), ')')]",
+                "marketplaceName": "ChangeTracking"
+            },
+            {
+                "name": "[concat('Updates', '(', variables('omsWorkspaceName'), ')')]",
+                "marketplaceName": "Updates"
+            },
+            {
+                "name": "[concat('AzureActivity', '(', variables('omsWorkspaceName'), ')')]",
+                "marketplaceName": "AzureActivity"
+            },
+            {
+                "name": "[concat('Containers', '(', variables('omsWorkspaceName'), ')')]",
+                "marketplaceName": "Containers"
+            },
+            {
+                "name": "[concat('ServiceMap', '(', variables('omsWorkspaceName'), ')')]",
+                "marketplaceName": "ServiceMap"
+            }
+        ]
+    }
+}

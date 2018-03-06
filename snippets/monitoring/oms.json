@@ -1,0 +1,495 @@
+[
+    {
+        "comments": "Log Analytics workspace",
+        "apiVersion": "2017-03-15-preview",
+        "location": "[variables('location')]",
+        "name": "[variables('omsWorkspaceName')]",
+        "type": "Microsoft.OperationalInsights/workspaces",
+        "properties": {
+            "sku": {
+                "name": "Free"
+            }
+        },
+        "resources": [
+            {
+                "name": "AzureActivityLog",
+                "type": "datasources",
+                "apiVersion": "2015-11-01-preview",
+                "dependsOn": [
+                    "[concat('Microsoft.OperationalInsights/workspaces/', variables('omsWorkspaceName'))]"
+                ],
+                "kind": "AzureActivityLog",
+                "properties": {
+                    "linkedResourceId": "[concat(subscription().id, '/providers/Microsoft.Insights/eventTypes/management')]"
+                }
+            },
+            {
+                "apiVersion": "2015-11-01-preview",
+                "type": "datasources",
+                "name": "Linux",
+                "dependsOn": [
+                    "[concat('Microsoft.OperationalInsights/workspaces/', variables('omsWorkspaceName'))]"
+                ],
+                "kind": "LinuxPerformanceObject",
+                "properties": {
+                    "performanceCounters": [
+                        {
+                            "counterName": "% Used Inodes"
+                        },
+                        {
+                            "counterName": "Free Megabytes"
+                        },
+                        {
+                            "counterName": "% Used Space"
+                        },
+                        {
+                            "counterName": "Disk Transfers/sec"
+                        },
+                        {
+                            "counterName": "Disk Reads/sec"
+                        },
+                        {
+                            "counterName": "Disk Writes/sec"
+                        }
+                    ],
+                    "objectName": "Logical Disk",
+                    "instanceName": "*",
+                    "intervalSeconds": 10
+                }
+            },
+            {
+                "apiVersion": "2015-11-01-preview",
+                "type": "datasources",
+                "name": "LinuxPerfCollection",
+                "dependsOn": [
+                    "[concat('Microsoft.OperationalInsights/workspaces/', variables('omsWorkspaceName'))]"
+                ],
+                "kind": "LinuxPerformanceCollection",
+                "properties": {
+                    "state": "Enabled"
+                }
+            },
+            {
+                "apiVersion": "2015-11-01-preview",
+                "type": "datasources",
+                "name": "Syslog",
+                "dependsOn": [
+                    "[concat('Microsoft.OperationalInsights/workspaces/', variables('omsWorkspaceName'))]"
+                ],
+                "kind": "LinuxSyslog",
+                "properties": {
+                    "syslogName": "kern",
+                    "syslogSeverities": [
+                        {
+                            "severity": "emerg"
+                        },
+                        {
+                            "severity": "alert"
+                        },
+                        {
+                            "severity": "crit"
+                        },
+                        {
+                            "severity": "err"
+                        },
+                        {
+                            "severity": "warning"
+                        }
+                    ]
+                }
+            },
+            {
+                "apiVersion": "2015-11-01-preview",
+                "type": "datasources",
+                "name": "SyslogCollection",
+                "dependsOn": [
+                    "[concat('Microsoft.OperationalInsights/workspaces/', variables('omsWorkspaceName'))]"
+                ],
+                "kind": "LinuxSyslogCollection",
+                "properties": {
+                    "state": "Enabled"
+                }
+            },
+            {
+                "apiVersion": "2015-11-01-preview",
+                "type": "datasources",
+                "name": "sampleCustomLogCollection1",
+                "dependsOn": [
+                    "[concat('Microsoft.OperationalInsights/workspaces/', variables('omsWorkspaceName'))]"
+                ],
+                "kind": "CustomLogCollection",
+                "properties": {
+                    "state": "LinuxLogsEnabled"
+                }
+            },
+            {
+                "apiVersion": "2015-11-01-preview",
+                "name": "Free Tier Data Consumption Tracker",
+                "dependsOn": [
+                    "[concat('Microsoft.OperationalInsights/workspaces/', variables('omsWorkspaceName'))]"
+                ],
+                "type": "views",
+                "properties": {
+                    "Id": "Free Tier Data Consumption Tracker",
+                    "Name": "Free Tier Data Consumption Tracker",
+                    "Dashboard": [
+                        {
+                            "Id": "InformationBlade",
+                            "Type": "Blade",
+                            "Version": 0,
+                            "Configuration": {
+                                "General": {
+                                    "Title": "For More Information, Refer To The Following Blog Post",
+                                    "NewGroup": false,
+                                    "Color": "#0072c6"
+                                },
+                                "Header": {
+                                    "Image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAztJREFUeNrUmktoE1EUhqexKj4zJWoaqIpVaVGxKr6ogsaNbhS0YKkKFeKmriwFEaXYnY+FYjeCbmtRRBeuXIlLMe1CXGlduBOt0rS1FaF2/A+ciWMy0yT3njvN/PBtMuHc8899zJ1zp8ZxHEtAKXAE7AdNYBOwGVKO+QQ+gDfgFfii23CNhoHV4CyzWzHGEBgEA2BUKQIZqJAG0A+mHTn9AvfB2krzqeTPi8AVMOWYE92UPrBY2kAzeOeEp/fcZsncYmWMsjaQBdut8LSN22zTnQMXwYwzf5rhHJSGUJdTPeoKyjNoGT0JnoIFCt1/GXwOuNYIbirE/APawbNyhlATmNS4W4fm6NW0Rlxa/baWmsQLwROwXGMC2orXSmkpeMw55lVooAe0aK4gcUMG3NWpJ8hAA+gVWAJtRXPlqpdzLTJwlbvJpAFbID7leK3QwCpwXughFDdsgNTJOecN0A9LhIKbHkIW59rpNdAhuA2wQ+gB0hnXQBLsiqCBnaCeDKTpxUYwcDwkA5TzYTLQKryTDGMOuDoQ44eDFcEhRNpCBtYJB42HaGC9O4klVRuwl1opPNdIa2KaG7dK7nSdgXZWxCwzskOYwPmtxISBuPEQxj9pnAx8NRC4LiQDo2RgJMI98DHGtUpppbgXvNSbMEAv9af5NTKKaicDtK/+ZmCNNi0qpyRpCH3nKnHUNOROYtIj4eDTXP9JMzfAlHAbg966UEKwXE71m70+NSH67bdgFTvhrQv9AA+E7sw98Nbnd/rtjlAbDznn/ypzKc2KnKuDc1TmWgXiT3KuRZU5Oq+6LrQ6BGlWIH6f5TlbK9zM9YNhzQaOKV4rR8M8RD23q7ibG0FOo4snwA6fuC18TVWU08Zyy+snwHNLrbxu8ZJ5F7zkIXUUdNP+XTEelddPgRfFAzZ4wmXAbBUcblAOF1QP+TJVcMSU0T2lPA7G5iH5HLctcsy6AWRDTD7LbYoedNeCS2DcYOK0SnVzW+In9S5JcEtzSfRL/DbHrigfnY896C2LPvQ4B/b4PBRLiZ7KdJg9wLvhMaUCqdDnNgkqtIJ9oBlspqITWMYvSj/5pWnE+ve5zev8hkxDfwUYAP0NkvYTPlJVAAAAAElFTkSuQmCC",
+                                    "Label": "Free Tier Data Consumption Tracker ",
+                                    "Link": {
+                                        "Label": "More info",
+                                        "Url": "https://blogs.msdn.microsoft.com/wei_out_there_with_system_center/2017/03/21/oms-free-tier-data-consumption-tracker-dashboard/"
+                                    }
+                                },
+                                "List": [
+                                    {
+                                        "Title": "Summary",
+                                        "Content": "In **Operations Management Suite (OMS)**, there is a Free Tier that allows up to **500 MB** of data upload per day for Log Analytics, with 7 days of data retention.\n\n\nThis solution features a custom OMS Dashboard – the **Free Tier Data Consumption Tracker** - that extends the Log Analytics Usage records used primarily to drive the Usage Dashboard. \nIt provides a summary view of the data quota consumption relative to the 500 MB daily data upload limit of the OMS Free Tier, calculated in percentage."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "Id": "SingleQueryDonutBuilderBladeV1",
+                            "Type": "Blade",
+                            "Version": 0,
+                            "Configuration": {
+                                "General": {
+                                    "title": "Free Tier Data Consumption by Solution & DataType",
+                                    "newGroup": false,
+                                    "icon": "",
+                                    "useIcon": false
+                                },
+                                "Header": {
+                                    "Title": "Free Tier Billable Data Consumption by Solution",
+                                    "Subtitle": "Last 24 Hours"
+                                },
+                                "Donut": {
+                                    "Query": "Type=Usage QuantityUnit=\"MBytes\" IsBillable=true TimeGenerated>NOW-24HOURS | Extend mul(Quantity,0.2) AS UsedFreeTierPercent | measure sum(UsedFreeTierPercent) AS TotalUsedFreeTierPercent by Solution",
+                                    "CenterLegend": {
+                                        "Text": "% Used",
+                                        "Operation": "Sum",
+                                        "ArcsToSelect": []
+                                    },
+                                    "Options": {
+                                        "colors": [
+                                            "#00188f",
+                                            "#0072c6",
+                                            "#00bcf2"
+                                        ],
+                                        "valueColorMapping": []
+                                    }
+                                },
+                                "List": {
+                                    "Query": "Type=Usage QuantityUnit=\"MBytes\" IsBillable=true TimeGenerated>NOW-24HOURS | Extend mul(Quantity,0.2) AS UsedFreeTierPercent | measure sum(UsedFreeTierPercent) AS TotalUsedFreeTierPercent by DataType, Solution",
+                                    "HideGraph": false,
+                                    "enableSparklines": false,
+                                    "operation": "Summary",
+                                    "ColumnsTitle": {
+                                        "Name": "Data Type",
+                                        "Value": "% Quota Used"
+                                    },
+                                    "Color": "#0072c6",
+                                    "thresholds": {
+                                        "isEnabled": true,
+                                        "values": [
+                                            {
+                                                "name": "Normal",
+                                                "threshold": "Default",
+                                                "color": "#009e49",
+                                                "isDefault": true
+                                            },
+                                            {
+                                                "name": "Warning",
+                                                "threshold": "75",
+                                                "color": "#fcd116",
+                                                "isDefault": false
+                                            },
+                                            {
+                                                "name": "Error",
+                                                "threshold": "95",
+                                                "color": "#ba141a",
+                                                "isDefault": false
+                                            }
+                                        ]
+                                    },
+                                    "NameDSVSeparator": "",
+                                    "NavigationQuery": "{selected item}"
+                                }
+                            }
+                        },
+                        {
+                            "Id": "SingleQueryDonutBuilderBladeV1",
+                            "Type": "Blade",
+                            "Version": 0,
+                            "Configuration": {
+                                "General": {
+                                    "title": "For Nodes/Endpoints/Computers Only",
+                                    "newGroup": false,
+                                    "icon": "",
+                                    "useIcon": false
+                                },
+                                "Header": {
+                                    "Title": "Free Tier Billable Data Consumption by DataType",
+                                    "Subtitle": "Last 24 Hours"
+                                },
+                                "Donut": {
+                                    "Query": "Type=Usage QuantityUnit=\"MBytes\" IsBillable=true Computer!=\"-\" TimeGenerated>NOW-24HOURS | Extend mul(Quantity,0.2) AS UsedFreeTierPercent | measure sum(UsedFreeTierPercent) AS TotalUsedFreeTierPercent by DataType",
+                                    "CenterLegend": {
+                                        "Text": "% Used",
+                                        "Operation": "Sum",
+                                        "ArcsToSelect": []
+                                    },
+                                    "Options": {
+                                        "colors": [
+                                            "#ff8c00",
+                                            "#ffb900",
+                                            "#fcd116"
+                                        ],
+                                        "valueColorMapping": []
+                                    }
+                                },
+                                "List": {
+                                    "Query": "Type=Usage QuantityUnit=\"MBytes\" IsBillable=true Computer!=\"-\" TimeGenerated>NOW-24HOURS | Extend mul(Quantity,0.2) AS UsedFreeTierPercent | measure sum(UsedFreeTierPercent) AS TotalUsedFreeTierPercent by Computer, DataType",
+                                    "HideGraph": false,
+                                    "enableSparklines": false,
+                                    "operation": "Summary",
+                                    "ColumnsTitle": {
+                                        "Name": "Node",
+                                        "Value": "% Quota Used"
+                                    },
+                                    "Color": "#fcd116",
+                                    "thresholds": {
+                                        "isEnabled": true,
+                                        "values": [
+                                            {
+                                                "name": "Normal",
+                                                "threshold": "Default",
+                                                "color": "#009e49",
+                                                "isDefault": true
+                                            },
+                                            {
+                                                "name": "Warning",
+                                                "threshold": "75",
+                                                "color": "#fcd116",
+                                                "isDefault": false
+                                            },
+                                            {
+                                                "name": "Error",
+                                                "threshold": "95",
+                                                "color": "#ba141a",
+                                                "isDefault": false
+                                            }
+                                        ]
+                                    },
+                                    "NameDSVSeparator": "",
+                                    "NavigationQuery": "{selected item}"
+                                }
+                            }
+                        },
+                        {
+                            "Id": "SingleQueryDonutBuilderBladeV1",
+                            "Type": "Blade",
+                            "Version": 0,
+                            "Configuration": {
+                                "General": {
+                                    "title": "For Non-Nodes ",
+                                    "newGroup": false,
+                                    "icon": "",
+                                    "useIcon": false
+                                },
+                                "Header": {
+                                    "Title": "Free Tier Billable Data Consumption by DataType",
+                                    "Subtitle": "Last 24 Hours"
+                                },
+                                "Donut": {
+                                    "Query": "Type=Usage QuantityUnit=\"MBytes\" IsBillable=true Computer=\"-\" TimeGenerated>NOW-24HOURS | Extend mul(Quantity,0.2) AS UsedFreeTierPercent | measure sum(UsedFreeTierPercent) AS TotalUsedFreeTierPercent by DataType",
+                                    "CenterLegend": {
+                                        "Text": "% Used",
+                                        "Operation": "Sum",
+                                        "ArcsToSelect": []
+                                    },
+                                    "Options": {
+                                        "colors": [
+                                            "#ec008c",
+                                            "#68217a",
+                                            "#6dc2e9"
+                                        ],
+                                        "valueColorMapping": []
+                                    }
+                                },
+                                "List": {
+                                    "Query": "Type=Usage QuantityUnit=\"MBytes\" IsBillable=true Computer=\"-\" TimeGenerated>NOW-24HOURS | Extend mul(Quantity,0.2) AS UsedFreeTierPercent | measure sum(UsedFreeTierPercent) AS TotalUsedFreeTierPercent by Solution",
+                                    "HideGraph": false,
+                                    "enableSparklines": false,
+                                    "operation": "Summary",
+                                    "ColumnsTitle": {
+                                        "Name": "OMS Solution",
+                                        "Value": "% Quota Used"
+                                    },
+                                    "Color": "#002050",
+                                    "thresholds": {
+                                        "isEnabled": true,
+                                        "values": [
+                                            {
+                                                "name": "Normal",
+                                                "threshold": "Default",
+                                                "color": "#009e49",
+                                                "isDefault": true
+                                            },
+                                            {
+                                                "name": "Warning",
+                                                "threshold": "75",
+                                                "color": "#fcd116",
+                                                "isDefault": false
+                                            },
+                                            {
+                                                "name": "Error",
+                                                "threshold": "95",
+                                                "color": "#ba141a",
+                                                "isDefault": false
+                                            }
+                                        ]
+                                    },
+                                    "NameDSVSeparator": "",
+                                    "NavigationQuery": "{selected item}"
+                                }
+                            }
+                        },
+                        {
+                            "Id": "SingleQueryDonutBuilderBladeV1",
+                            "Type": "Blade",
+                            "Version": 0,
+                            "Configuration": {
+                                "General": {
+                                    "title": "Billable vs Non-Billable Usage",
+                                    "newGroup": false,
+                                    "icon": "",
+                                    "useIcon": false
+                                },
+                                "Header": {
+                                    "Title": "Non-Billable Data Usage to Free Tier Comparison",
+                                    "Subtitle": "By DataType Over the Last 24 Hours"
+                                },
+                                "Donut": {
+                                    "Query": "Type=Usage QuantityUnit=\"MBytes\" IsBillable=false TimeGenerated>NOW-24HOURS | Extend mul(Quantity,0.2) AS UsedFreeTierPercent | measure sum(UsedFreeTierPercent) AS TotalUsedFreeTierPercent by DataType",
+                                    "CenterLegend": {
+                                        "Text": "% Total",
+                                        "Operation": "Sum",
+                                        "ArcsToSelect": []
+                                    },
+                                    "Options": {
+                                        "colors": [
+                                            "#e2e584",
+                                            "#bad80a",
+                                            "#009e49"
+                                        ],
+                                        "valueColorMapping": []
+                                    }
+                                },
+                                "List": {
+                                    "Query": "Type=Usage QuantityUnit=\"MBytes\" IsBillable=true TimeGenerated>NOW-24HOURS | Extend mul(Quantity,0.2) AS UsedFreeTierPercent | measure sum(UsedFreeTierPercent) AS TotalUsedFreeTierPercent by Type",
+                                    "HideGraph": false,
+                                    "enableSparklines": false,
+                                    "operation": "Summary",
+                                    "ColumnsTitle": {
+                                        "Name": "Billable Usage",
+                                        "Value": "% Quote Used"
+                                    },
+                                    "Color": "#ba141a",
+                                    "thresholds": {
+                                        "isEnabled": true,
+                                        "values": [
+                                            {
+                                                "name": "Normal",
+                                                "threshold": "Default",
+                                                "color": "#009e49",
+                                                "isDefault": true
+                                            },
+                                            {
+                                                "name": "Warning",
+                                                "threshold": "75",
+                                                "color": "#fcd116",
+                                                "isDefault": false
+                                            },
+                                            {
+                                                "name": "Error",
+                                                "threshold": "99",
+                                                "color": "#ba141a",
+                                                "isDefault": false
+                                            }
+                                        ]
+                                    },
+                                    "NameDSVSeparator": "",
+                                    "NavigationQuery": "{selected item}"
+                                }
+                            }
+                        }
+                    ],
+                    "OverviewTile": {
+                        "Id": "SingleQueryDonutBuilderTileV1",
+                        "Type": "OverviewTile",
+                        "Version": 0,
+                        "Configuration": {
+                            "Donut": {
+                                "Query": "Type=Usage QuantityUnit=\"MBytes\" IsBillable=true TimeGenerated>NOW-24HOURS | Extend mul(Quantity,0.2) AS UsedFreeTierPercent | measure sum(UsedFreeTierPercent) AS TotalUsedFreeTierPercent by Solution",
+                                "CenterLegend": {
+                                    "Text": "% Quota Used",
+                                    "Operation": "Sum",
+                                    "ArcsToSelect": []
+                                },
+                                "Options": {
+                                    "colors": [
+                                        "#00188f",
+                                        "#0072c6",
+                                        "#00bcf2"
+                                    ],
+                                    "valueColorMapping": []
+                                }
+                            },
+                            "Advanced": {
+                                "DataFlowVerification": {
+                                    "Enabled": false,
+                                    "Query": "*",
+                                    "Message": ""
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "apiVersion": "2015-11-01-preview",
+        "type": "Microsoft.OperationsManagement/solutions",
+        "name": "[concat(variables('omsConfig').solutions[copyIndex()].Name)]",
+        "location": "[variables('location')]",
+        "dependsOn": [
+            "[concat('Microsoft.OperationalInsights/workspaces/', variables('omsWorkspaceName'))]"
+        ],
+        "copy": {
+            "name": "solutionCopy",
+            "count": "[length(variables('omsConfig').solutions)]"
+        },
+        "properties": {
+            "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('omsWorkspaceName'))]"
+        },
+        "plan": {
+            "name": "[variables('omsConfig').solutions[copyIndex()].name]",
+            "product": "[concat('OMSGallery/', variables('omsConfig').solutions[copyIndex()].marketplaceName)]",
+            "promotionCode": "",
+            "publisher": "Microsoft"
+        }
+    }
+]

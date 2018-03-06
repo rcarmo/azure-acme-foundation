@@ -1,0 +1,22 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "tenantName": {
+            "type": "string",
+            "defaultValue": "tenant",
+            "metadata": {
+                "description": "Tenant name, to be used as seed prefix for some resources"
+            }
+        },
+        "layerName": {
+            "type": "string",
+            "defaultValue": "default",
+            "metadata": {
+                "description": "Layer name"
+            }
+        }
+    },
+    "variables": {},
+    "resources": []
+}

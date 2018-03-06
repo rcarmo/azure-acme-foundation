@@ -1,0 +1,14 @@
+{
+    "location": "$LOCATION",
+    "tenantName": "[toLower(parameters('tenantName'))]",
+    "layerName": "[toLower(parameters('layerName'))]",
+    "uppercasedLayerName": "[concat(toUpper(substring(variables('layerName'),0,1)),substring(variables('layerName'),1))]",
+    "vnetName": "[variables('tenantName')]",
+    "omsWorkspaceName": "[concat(variables('tenantName'),'-','monitoring','-',variables('location'))]",
+    "networkingResourceGroupId": "[concat(subscription().id,'/resourceGroups/',variables('tenantName'),'-networking')]",
+    "vnetId": "[concat(variables('networkingResourceGroupId'), '/providers/Microsoft.Network/virtualNetworks/', variables('tenantName'))]",
+    "monitoringResourceGroupId": "[concat(subscription().id,'/resourceGroups/',variables('tenantName'),'-monitoring')]",
+    "diagsName": "[substring(concat(variables('tenantName'), 'diag', toLower(uniqueString(variables('monitoringResourceGroupId')))), 0, 20)]",
+    "diagsId": "[concat(variables('monitoringResourceGroupId'),'/providers/Microsoft.Storage/storageAccounts/', variables('diagsName'))]",
+    "omsWorkspaceId": "[concat(variables('monitoringResourceGroupId'), '/providers/Microsoft.OperationalInsights/workspaces/', variables('omsWorkspaceName'))]"
+}

@@ -1,8 +1,13 @@
 # Set environment variables (if they're not defined yet)
-export TENANT_NAME?=acme
-export LOCATION?=eastus
-export SSH_USER?=azureuser
-export TIMESTAMP=`date "+%Y-%m-%d-%H-%M-%S"`
+export TIMESTAMP=$(shell date "+%Y-%m-%d-%H-%M-%S")
+export SPEC_FILE?=project.yaml
+export LOCATION?=$(shell grep location $(SPEC_FILE) | cut -d \  -f 2)
+export TENANT_NAME?=$(shell grep tenant $(SPEC_FILE) | cut -d\  -f 2)
+
+
+# dump environment
+dump:
+	set
 
 # Generate SSH keys
 keys:
@@ -10,11 +15,29 @@ keys:
 	ssh-keygen -b 2048 -t rsa -f keys/$(SSH_USER) -q -N ""
 	mv keys/$(SSH_USER) keys/$(SSH_USER).pem
 
+check-vm-sizes:
+	az vm list-skus --location=$(LOCATION)
+
+check-quotas:
+	az vm list-usage --location=$(LOCATION)
+
+check-images:
+	az vm image list
 
 # Generate the Azure Resource Template parameter files
-params:
-	-mkdir parameters
-	python genparams.py
+templates: $(SPEC_FILE)
+	python generate.py $(SPEC_FILE)
+
+
+list:
+	az vm list \
+	--show-details \
+	--query '[].{name:name, resourceGroup:resourceGroup, location:location, powerstate:powerState, size:hardwareProfile.vmSize}'
+
+stop-%:
+	az vm deallocate \
+	--ids $$(az vm list --resource-group $(TENANT_NAME)-$* --query '[].id' --output tsv) \
+	--no-wait
 
 
 destroy-%:
@@ -25,20 +48,9 @@ destroy-%:
 
 validate-%:
 	az group deployment validate \
-		--resource-group $(TENANT_NAME)-$* 
-		--template-file templates/$*.json \
-		--parameters @parameters/$*.json
+		--resource-group $(TENANT_NAME)-$* \
+		--template-file templates/$(TENANT_NAME)-$*.json
 
-
-deploy-foundation:
-	-az group create --name $(TENANT_NAME)-foundation \
-		--location $(LOCATION) --output table 
-	az group deployment create \
-		--resource-group $(TENANT_NAME)-foundation \
-		--template-file templates/foundation.json \
-		--parameters @parameters/foundation.json \
-		--name cli-$(LOCATION)-$(TIMESTAMP) \
-		--output table
 
 # deploy generic layers
 deploy-%:
@@ -46,15 +58,12 @@ deploy-%:
 		--location $(LOCATION) --output table 
 	az group deployment create \
 		--resource-group $(TENANT_NAME)-$* \
-		--template-file templates/generic-layer.json \
-		--parameters @parameters/$*.json \
+		--template-file templates/$(TENANT_NAME)-$*.json \
 		--name cli-$(LOCATION)-$(TIMESTAMP) \
-		--output table \
-		--no-wait
-
+		--output table
 
 clean:
-	rm -rf parameters
+	rm -f templates/*.json
 
 
 ssh: # test invocation that doesn't validate host keys (for quick iteration)
@@ -67,6 +76,6 @@ ssh: # test invocation that doesn't validate host keys (for quick iteration)
 
 endpoints:
 	az network public-ip list \
-		--resource-group $(TENANT_NAME)-foundation \
+		--resource-group $(TENANT_NAME)-networking \
 		--query '[].{dnsSettings:dnsSettings.fqdn}' \
 		--output tsv

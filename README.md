@@ -30,6 +30,14 @@ This is a set of scripts to generate and deploy Azure Resource Manager templates
 
 A `tenant` is defined as a set of resource groups, each of which maps to a typical application tier or environment:
 
+# ACME
+
+## Default Layers:
+
+You _always_ get two base templates you need to deploy first: `monitoring` and `networking`.
+
+By default, `monitoring` contains a shared diagnostics storage account and (if enabled) OMS resources, whereas `networking` contains the virtual network for your deployments and 
+
 * `foundation` (networking, OMS monitoring and an SSH jumpbox)
 * `data` (IaaS database servers)
 * `middleware` (app servers)

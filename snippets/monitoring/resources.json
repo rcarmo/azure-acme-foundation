@@ -1,0 +1,16 @@
+[
+    {
+        "comments": "Diagnostics storage account",
+        "type": "Microsoft.Storage/storageAccounts",
+        "name": "[variables('diagsName')]",
+        "apiVersion": "2015-06-15",
+        "location": "[variables('location')]",
+        "tags": {
+            "tenant": "[variables('tenantName')]",
+            "layer": "[variables('layerName')]"
+        },
+        "properties": {
+            "accountType": "Standard_LRS"
+        }
+    }
+]

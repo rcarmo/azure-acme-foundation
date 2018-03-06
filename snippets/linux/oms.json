@@ -1,0 +1,21 @@
+{
+    "type": "Microsoft.Compute/virtualMachines/extensions",
+    "name": "[concat('$HOSTNAME','/Microsoft.EnterpriseCloud.Monitoring')]",
+    "apiVersion": "2017-03-30",
+    "location": "[variables('location')]",
+    "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/','$HOSTNAME')]"
+    ],
+    "properties": {
+        "publisher": "Microsoft.EnterpriseCloud.Monitoring",
+        "type": "OmsAgentForLinux",
+        "typeHandlerVersion": "1.4",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+            "workspaceId": "[reference(variables('omsWorkspaceId'), '2015-03-20').customerId]"
+        },
+        "protectedSettings": {
+            "workspaceKey": "[listKeys(variables('omsWorkspaceId'), '2015-03-20').primarySharedKey]"
+        }
+    }
+}

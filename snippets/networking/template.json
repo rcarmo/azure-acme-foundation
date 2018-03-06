@@ -1,0 +1,26 @@
+{
+    "comments": "Shared network resource for other resource groups",
+    "type": "Microsoft.Network/virtualNetworks",
+    "name": "[variables('vnetName')]",
+    "apiVersion": "2015-06-15",
+    "location": "[variables('location')]",
+    "tags": {
+        "tenant": "[variables('tenantName')]",
+        "layer": "[variables('layerName')]"
+    },
+    "properties": {
+        "addressSpace": {
+            "addressPrefixes": [
+                "192.168.0.0/16"
+            ]
+        },
+        "subnets": [
+            {
+                "name": "default",
+                "properties": {
+                    "addressPrefix": "192.168.0.0/24"
+                }
+            }
+        ]
+    }
+}
