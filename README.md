@@ -14,7 +14,9 @@
 * [ ] Check timezones and locales in cloud-config
 * [ ] Automation account?
 * [ ] Tag solutions and OMS
-* [ ] Modular generation from YAML file
+* [ ] Check API versions throughout snippets
+* [ ] Check metrics specs in snippets for deprecation
+* [x] Simple Modular generation from YAML file
 * [x] Split monitoring and networking
 * [x] Windows variant
 * [x] Timestamp deployments
