@@ -1,5 +1,7 @@
 # Azure ACME Foundation Templates
 
+See the [`feature-modular` branch](https://github.com/rcarmo/azure-acme-foundation/tree/feature-modular) for a better way, that will be merged in due time.
+
 <a href="//en.wikipedia.org/wiki/File:Box_of_%22ACME_EXPLOSIVE_TENNIS_BALLS%22_(screencap).jpg" title="Fair use of copyrighted material in the context of Acme Corporation">
 <img src="https://upload.wikimedia.org/wikipedia/en/8/84/Box_of_%22ACME_EXPLOSIVE_TENNIS_BALLS%22_%28screencap%29.jpg"></a>
 
