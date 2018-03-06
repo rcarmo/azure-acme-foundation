@@ -3,6 +3,7 @@
 <a href="//en.wikipedia.org/wiki/File:Box_of_%22ACME_EXPLOSIVE_TENNIS_BALLS%22_(screencap).jpg" title="Fair use of copyrighted material in the context of Acme Corporation">
 <img src="https://upload.wikimedia.org/wikipedia/en/8/84/Box_of_%22ACME_EXPLOSIVE_TENNIS_BALLS%22_%28screencap%29.jpg"></a>
 
+
 ## TODO
 
 * [ ] Key vault
@@ -13,8 +14,9 @@
 * [ ] Check timezones and locales in cloud-config
 * [ ] Automation account?
 * [ ] Tag solutions and OMS
-* [ ] Split monitoring and networking
-* [ ] Windows variant
+* [ ] Modular generation from YAML file
+* [x] Split monitoring and networking
+* [x] Windows variant
 * [x] Timestamp deployments
 * [x] Full diagnostics and OMS configuration (solutions, dashboards, container support)
 * [x] Docker CE repository added to all servers to ease deployment
@@ -22,27 +24,14 @@
 * [x] Jumpbox and diagnostics storage account
 * [x] Networking
 
-> **Note:** Right now all VMs start a `redis` container for testing OMS monitoring. That will be removed in the future.
-
 ## What
 
-This is a set of scripts to generate and deploy Azure Resource Manager templates for multi-tier, multi-tenant solutions.
+This is a set of scripts to generate and deploy Azure Resource Manager templates for multi-tier, multi-tenant solutions from a simple(r) YAML specification (see `project.yaml`)
 
-A `tenant` is defined as a set of resource groups, each of which maps to a typical application tier or environment:
+A `tenant` is defined as a set of resource groups, each of which maps to a typical application tier or environment, and which _always_ includes two base layers:
 
-# ACME
-
-## Default Layers:
-
-You _always_ get two base templates you need to deploy first: `monitoring` and `networking`.
-
-By default, `monitoring` contains a shared diagnostics storage account and (if enabled) OMS resources, whereas `networking` contains the virtual network for your deployments and 
-
-* `foundation` (networking, OMS monitoring and an SSH jumpbox)
-* `data` (IaaS database servers)
-* `middleware` (app servers)
-* `frontend` (front-end servers)
-* `devops` (Jenkins, etc.)
+* `networking` (VNET, NSGs and public IPs, if any) 
+* `monitoring` OMS monitoring
 
 This is what the default monitoring dashboard looks like after a few minutes:
 
@@ -54,13 +43,13 @@ This is what it all looks like deployed, if you hide away storage and other inco
 
 ## Why
 
-I needed a set of re-usable Azure templates that brought together a number of (sometimes quite widely disseminated) aspects of Linux infrastructure management (like diagnostics and monitoring) and that enabled me to get large-scale projects up to speed quickly.
+I needed a quick way to put together Azure deployment templates according to (sometimes quite widely disseminated) aspects of cloud infrastructure management (like diagnostics and monitoring) that enabled me to get large-scale projects up to speed quickly.
 
-As such, these templates have a number of distinguishing features from the standard Microsoft samples:
+As such, and after spending some time crafting custom JSON templates, I decided that a pre-processor was the way to go. Regardless the generated templates have a number of distinguishing features from the standard Microsoft samples:
 
 * _Everything_ is CLI-driven. Templates never leave your machine and are _never_ published to a public URL
 * All layers share a foundation networking infrastructure and can be developed/tweaked independently
-* Server configurations include full Linux/Docker diagnostics, logging and monitoring, including a free tier OMS instance and sample dashboards
+* Deployments include full Linux/Docker diagnostics, logging and monitoring, including a free tier OMS instance and sample dashboards
 * Linux package provisioning leverages `cloud-config`, making it easier to re-use existing on-premises (or competing providers') configurations
 * Resources and resource groups are namespaced and tagged to make it easy to deploy and manage multiple copies of the same solution for separate tenants
 
@@ -70,8 +59,9 @@ Why ACME? well, because I loved the Warner Bros. cartoons, and because these tem
 
 * `make keys` - generates an SSH key for managing the servers
 * `make params` - generates ARM template parameters
-* `make deploy-foundation` - deploys the networking layer, the jumpbox, a diagnostics storage account and OMS for all servers
-* `make deploy-<layername>` - deploys a named layer using the `generic-layer` template
+* `make deploy-networking` - deploys the networking layer
+* `make deploy-monitoring` - deploys a diagnostics storage account and OMS for all servers
+* `make deploy-<layername>` - deploys a named layer
 * `make endpoints` - list DNS aliases
 * `make destroy-<layername>` - destroys the named layer
 
@@ -82,10 +72,9 @@ Why ACME? well, because I loved the Warner Bros. cartoons, and because these tem
     az login
     make keys
     make params
-    make deploy-foundation
-    make deploy-data
-    make deploy-middleware
-    make deploy-frontend
+    make deploy-networking
+    make deploy-monitoring
+    ...
     make endpoints
     make ssh
 
@@ -93,7 +82,7 @@ Why ACME? well, because I loved the Warner Bros. cartoons, and because these tem
 
 * GNU `make`
 * [Python 3][p]
-* The new [Azure CLI](https://github.com/Azure/azure-cli) (`pip install -U azure-cli` will install it)
+* The new [Azure CLI](https://github.com/Azure/azure-cli) (`pip install -U azure-cli` to install)
 
 [d]: http://docker.com
 [p]: http://python.org
