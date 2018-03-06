@@ -1,0 +1,71 @@
+
+---
+tenant: acme
+addressing: 192.168.0.0/16
+location: westeurope
+oms: yes
+defaults:
+  size: Standard_A2_v2
+  kind: linux
+  publisher: Canonical
+  sku: 16.04-LTS
+  keyAuth: no
+  adminUsername: azureuser
+  adminPassword: MeepMeep!123
+  adminPublicKey: # TODO: default to fetching the current SSH key if empty 
+  osDiskSizeGB: 30
+layers:
+  - name: operations
+    addressing: 192.168.0.0/24
+    machines:
+      - name: jumpbox
+        availabilitySet: jumpbox
+        customData: cloud-config/jumpbox.yml # TODO: inject
+        public: yes # TODO: public IPs
+        ports: 22 # TODO: NSGs
+  - name: frontend
+    addressing: 192.168.1.0/24
+    machines:
+      - name: web01
+        kind: windows
+        sku: 2016-Datacenter-Server-Core
+        availabilitySet: web
+      - name: web02
+        kind: windows
+        availabilitySet: web
+        sku: 2016-Datacenter-Server-Core
+  - name: app
+    addressing: 192.168.2.0/24
+    machines:
+      - name: app01
+        availabilitySet: app
+        size: Standard_D4_v2
+        kind: linux
+        publisher: CoreOS
+        sku: Stable
+      - name: app02
+        availabilitySet: app
+        size: Standard_D4_v2
+        kind: linux
+        publisher: CoreOS
+        sku: Stable
+      - name: app03
+        availabilitySet: app
+        size: Standard_D4_v2
+        kind: linux
+        publisher: CoreOS
+        sku: Stable
+  - name: data
+    addressing: 192.168.3.0/24
+    machines:
+      - name: database01
+        availabilitySet: database
+        kind: windows
+        sku: 2016-Datacenter
+        size: Standard_DS4_v2
+        sql: yes
+        dataDisks:
+          - name: sqldata
+            lun: 0
+            diskSizeGB: 1023
+            caching: ReadOnly
